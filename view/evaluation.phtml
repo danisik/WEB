@@ -1,0 +1,147 @@
+<?php if ($_SESSION['prihlasen'] != false) {?>
+<title>Konferenční systém WEB-KONF - Nový příspěvek</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=2">Přijaté příspěvky</a></li><?php }?> 
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=3">Nepřijaté příspěvky</a></li><?php }?>          
+          <?php if ($this->rank['nazev'] == "Autor") {?> <li><a href="index.php?page=contribution">Nový příspěvek</a></li><?php }?>
+          <?php if ($this->rank['nazev'] == "Autor" || $this->rank['nazev'] == "Recenzent") {?><li><a href="index.php?page=public">Publikované příspěvky</li> </a><?php }?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?><li><a href="index.php?page=admin"><span class="glyphicon glyphicon-wrench"></span> Admin panel</a></li><?php };?>
+        </ul>
+        <form method="post"><button type="submit" name="ButtLogout" class="btn navbar-btn navbar-right" style="padding-right: -5px;"> <span class="glyphicon glyphicon-off"> Logout </button></form>
+      </div>
+    </nav>    
+    
+    <?php 
+    //----------------------------------------------------------------
+    //------------------------ADMIN-----------------------------------
+    //----------------------------------------------------------------
+    if ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin") {
+    ?>
+    <h1 class="textTitle">Nelze ohodnocovat příspěvky za admina</h1>
+    
+    <?php
+    } 
+    //----------------------------------------------------------------
+    //-------------------------RECENZENT------------------------------
+    //----------------------------------------------------------------
+    else if ($this->rank['nazev'] == "Autor") {
+    ?>
+    
+    <h1 class="textTitle">Nelze ohodnocovat příspěvky za autora</h1>
+    
+    <?php
+    }
+    //---------------------------------------------------------------- 
+    //-------------------------AUTOR---------------------------------
+    //----------------------------------------------------------------
+    else if ($this->rank['nazev'] == "Recenzent") {
+     if ($_SESSION['accessEvaluation'] == true) { 
+    ?>
+    
+    <h1 class="textTitle">Hodnocení příspěvku</h1>
+    <form method="post" class="form-horizontal" enctype="multipart/form-data">
+      <div class="form-group">
+  <?php 
+      if (isset($_POST['ButtEvaluation'])) {?>
+          <div class="alert alert-danger"> 
+        <?php
+          echo $_SESSION['error']."<br>";
+        }?></div>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+          <input type="text" class="form-control" name="nazev_prispevku" value="<?php echo $_SESSION['contribution']['nazev'];?>" readonly>
+        </div>
+        <br>        
+        <p class="pAcc"><a href="<?php echo $_SESSION['contribution']['soubor'];?>" download><label class="labelZpet" style="">Stáhnout příspěvek</label></a></p>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="originalitaSelect">Originalita:***</label>
+          <div class="col-sm-10">
+            <select class="form-control btn-primary BlueBackground WhiteText" name="originalitaSelect" style="max-width: 15%;" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?> ><?php echo $_SESSION['selectBox']['originalita'] ?></select>
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="temaSelect">Téma:***</label>
+          <div class="col-sm-10">
+            <select class="form-control btn-primary BlueBackground WhiteText" name="temaSelect" style="max-width: 15%;" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?>><?php echo $_SESSION['selectBox']['tema'] ?></select>
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="temaSelect">Technická kvalita:***</label>
+          <div class="col-sm-10">
+            <select class="form-control btn-primary BlueBackground WhiteText" name="technickaSelect" style="max-width: 15%;" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?>><?php echo $_SESSION['selectBox']['technicka'] ?></select>
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="temaSelect">Jazyková kvalita:***</label>
+          <div class="col-sm-10">
+            <select class="form-control btn-primary BlueBackground WhiteText" name="jazykovaSelect" style="max-width: 15%;" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?>><?php echo $_SESSION['selectBox']['jazykova'] ?></select>
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="temaSelect">Doporučení:***</label>
+          <div class="col-sm-10">
+            <select class="form-control btn-primary BlueBackground WhiteText" name="doporuceniSelect" style="max-width: 15%;" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?>><?php echo $_SESSION['selectBox']['doporuceni'] ?></select>
+          </div>                                                                                                              
+        </div>
+          
+    <p class="pAcc"><textarea name="poznamky" class="ckeditor" <?php if ($_SESSION['contribution']['stav'] != 1){?>disabled <?php }?>><?php echo $_SESSION['evaluation']['text']?></textarea></p>
+    <br>
+    <?php if ($_SESSION['contribution']['stav'] == 1){?>
+    <p class="pAcc"><label class = "RedText">*** = NUTNO ZADAT</label></p>
+    <br><br>
+    <input type="submit" name="ButtEvaluation" value="Uložit" class="btn btn-primary BlueBackground WhiteText"> <br><br>
+    <?php }?>
+    </div>
+</form>
+    
+    <?php 
+    }
+    else {
+    ?>
+  <h1 class="textTitle">TOTO NENÍ VAŠE HODNOCENÍ!!</h1>
+  
+    <?php                                                                                
+    }
+    }
+    ?>
+    
+    
+    
+  <?php }
+  else {
+  ?>
+    <title>Konferenční systém WEB-KONF - Hodnocení příspěvku</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+        </ul>
+      </div>
+    </nav>
+  <h1 class="textTitle">NEJSTE PŘIHLÁŠEN, PROSÍM PŘIHLAŠTE SE!!</h1>
+  <?php }?>

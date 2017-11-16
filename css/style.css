@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+footer { 
+  background-color: #aaa;
+  color: white;
+}
+
+header {
+  background-color: #3366ff;
+  color: white;
+  padding: 15px !important;
+}
+
+.textTitle {
+  color: #3366ff;
+}
+
+.nav a {
+  color: white !important;
+}
+
+table {
+  display: table !important;
+}
+
+table th {
+  display: table-cell !important;
+}
+
+table td {
+    background-color: white;
+    color: black;
+}
+
+table, table th, table td {
+  text-align: center !important; 
+  vertical-align: middle !important; 
+}
+
+.navbar-inverse {border-color:#aaa !important;}
+
+.xButton input {
+    background:url(/img/x-button.png) no-repeat;
+    cursor:pointer;
+    width: 17px;
+    height: 17px;
+    border: none;
+    color: transparent;
+}
+
+
+.BlueBackground {background-color: #3366ff !important;}
+.GrayBackground {background-color: #aaa !important;}
+
+
+
+.WhiteText {color: white !important;}
+.BlueText {color: #3366ff !important;}
+.RedText {color: red !important;}
+
+.cursorPointer {cursor: pointer;}

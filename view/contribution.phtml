@@ -1,0 +1,131 @@
+<?php if ($_SESSION['prihlasen'] != false) {?>
+<title>Konferenční systém WEB-KONF - Nový příspěvek</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=2">Přijaté příspěvky</a></li><?php }?> 
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=3">Nepřijaté příspěvky</a></li><?php }?>
+          <?php if ($this->rank['nazev'] == "Autor") {?> <li><a href="index.php?page=contribution">Nový příspěvek</a></li><?php }?>
+          <?php if ($this->rank['nazev'] == "Autor" || $this->rank['nazev'] == "Recenzent") {?><li><a href="index.php?page=public">Publikované příspěvky</li> </a><?php }?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?><li><a href="index.php?page=admin"><span class="glyphicon glyphicon-wrench"></span> Admin panel</a></li><?php };?>
+        </ul>
+        <form method="post"><button type="submit" name="ButtLogout" class="btn navbar-btn navbar-right" style="padding-right: -5px;"> <span class="glyphicon glyphicon-off"> Logout </button></form>
+      </div>
+    </nav>       
+    <?php
+     if ($_SESSION['contribution']['stav'] == 2 || ($_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] == "new" || $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] == $_SESSION['uzivatel']['ID_UZIVATEL'] || $this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin"))
+     { 
+    ?>
+    
+    <?php if(isset($_GET['id']) && $this->rank['nazev'] == "Autor") {?><h1 class="textTitle">Upravit příspěvek</h1>
+    <?php } else if(isset($_GET['id']) && ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin")) {?> <h1 class="textTitle">Náhled příspěvku</h1>
+    <?php } else {?>  <h1 class="textTitle">Nový příspěvek</h1> <?php }?>
+    <form method="post"enctype="multipart/form-data">
+    <div class="form-group">
+  <?php 
+      if (isset($_POST['ButtnewContribution'])) {?>
+          <div class="alert alert-danger"> 
+        <?php
+          echo $_SESSION['error']."<br>";
+        }?></div>
+    
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+          <input type="text" class="form-control" name="nazev_prispevku" placeholder="Název příspěvku ***" value="<?php echo $_SESSION['contribution']['nazev']?>" <?php if ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin" || ($_SESSION['contribution']['stav'] != 1 && $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] != "new")) {?> readonly <?php }?>>
+        </div>
+            <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="autori" placeholder="Autoři ***" value="<?php echo $_SESSION['contribution']['autor']?>" <?php if ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin" || ($_SESSION['contribution']['stav'] != 1 && $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] != "new")) {?> readonly <?php }?>>
+        </div>
+            <br> 
+    <textarea name="popis" class="ckeditor" <?php if ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin" || ($_SESSION['contribution']['stav'] != 1 && $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] != "new")) {?> readonly <?php }?>><?php echo $_SESSION['contribution']['text']?></textarea></p>
+    <?php if (($this->rank['nazev'] == "Autor" && $_SESSION['contribution']['stav'] == 1) || $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] == "new") {?>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+          <label for="pdf" class="form-control">Vyberte soubor ***</label>
+          <input type="file" class="form-control" name="pdf" placeholder="Vyberte soubor ***" accept="application/pdf">
+        </div>
+    <?php } else {?> <p class="pAcc"><a href="<?php echo ("pdf/".$_SESSION['contribution']['pdf']);?>" download><label class="labelZpet" style="">Stáhnout příspěvek</label></a></p><?php }?>
+    <?php if (isset($_GET['id'])) {?>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+          <input type="text" class="form-control" name="ourFile" value="<?php echo $_SESSION['contribution']['pdf']; ?>" readonly>
+        </div>
+        <br>
+    <?php }?>
+    <?php if (!isset($_GET['id'])) {?><br><p class="pAcc"><label class = "RedText">*** = NUTNO ZADAT</label></p> <?php }?>
+    <?php if (($this->rank['nazev'] == "Autor" && $_SESSION['contribution']['stav'] == 1) || $_SESSION['contribution']['Uzivatel_ID_UZIVATEL'] == "new") {?>
+    <input type="submit" name="ButtnewContribution" value="Uložit" class="btn btn-primary BlueBackground WhiteText">
+    <br><br>
+    <?php }?>
+    </div>
+</form>
+    
+    <?php 
+    }
+    ?>
+    
+    
+    
+  <?php } 
+  else {
+  ?>
+    <title>Konferenční systém WEB-KONF - Nový příspěvek</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+        </ul>
+      </div>
+    </nav>
+  <h1 class="textTitle">Náhled příspěvku</h1>
+    <form method="post"enctype="multipart/form-data">
+    <div class="form-group"> 
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+          <input type="text" class="form-control" name="nazev_prispevku" placeholder="Název příspěvku ***" value="<?php if ($_SESSION['contribution']['stav'] == 2) {echo $_SESSION['contribution']['nazev'];}?>" readonly>
+        </div>
+            <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="autori" placeholder="Autoři ***" value="<?php if ($_SESSION['contribution']['stav'] == 2) {echo $_SESSION['contribution']['autor'];}?>" readonly>
+        </div>
+            <br> 
+    <textarea name="popis" class="ckeditor" readonly><?php if ($_SESSION['contribution']['stav'] == 2) {echo $_SESSION['contribution']['text'];}?></textarea></p>
+    <?php if (isset($_GET['id']) && ($_SESSION['contribution']['pdf'] != "")) {?>
+    <?php if ($_SESSION['contribution']['stav'] == 2){ ?><p class="pAcc"><a href="<?php echo ("pdf/".$_SESSION['contribution']['pdf']);?>" download><label class="labelZpet" style="">Stáhnout příspěvek</label></a></p><?php }?>
+        <br>
+        <?php ?>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+          <input type="text" class="form-control" name="ourFile" value="<?php if ($_SESSION['contribution']['stav'] == 2) {echo $_SESSION['contribution']['pdf'];} ?>" readonly>
+        </div>
+        <br>
+    <?php }?>
+    </div>
+</form>
+  <?php }?> 

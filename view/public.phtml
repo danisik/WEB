@@ -1,0 +1,53 @@
+<title>Konferenční systém WEB-KONF - Konference</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+<?php if ($_SESSION['prihlasen'] != true) {?>
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+<?php } else if ($_SESSION['prihlasen'] != false && ($_SESSION['uzivatel']['Hodnost_ID_HODNOST'] == 4 || $_SESSION['uzivatel']['Hodnost_ID_HODNOST'] == 1)) {?>
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <li><a href="index.php?page=konf&stav=2">Přijaté příspěvky</a>
+          <li><a href="index.php?page=konf&stav=3">Nepřijaté příspěvky</a></li>
+<?php } else if ($_SESSION['prihlasen'] != false && $_SESSION['uzivatel']['Hodnost_ID_HODNOST'] == 2 ) {?>
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+<?php }else if ($_SESSION['prihlasen'] != false && $_SESSION['uzivatel']['Hodnost_ID_HODNOST'] == 3) {?>
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <li><a href="index.php?page=contribution">Nový příspěvek</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+<?php }?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?><li><a href="index.php?page=admin"><span class="glyphicon glyphicon-wrench"></span> Admin panel</a></li><?php };?>
+        </ul>
+        <form method="post"><button type="submit" name="ButtLogout" class="btn navbar-btn navbar-right" style="padding-right: -5px;"> <span class="glyphicon glyphicon-off"> Logout </button></form>
+      </div>
+    </nav>
+    
+    <form method="post">                                                                      
+    <div style="overflow-x:auto;" class="table-responsive">
+    <table class="table table-bordered">
+     <tr class="BlueBackground WhiteText">
+      <th>Název</th>
+      <th>Autoři</th>
+     </tr>
+     <?php echo $_SESSION['neprihlasen'];?>   
+    </table>
+    </div>
+    </form> 

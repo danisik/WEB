@@ -1,0 +1,147 @@
+<?php if ($_SESSION['prihlasen'] != false) {?>
+<title>Konferenční systém WEB-KONF - User info</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=2">Přijaté příspěvky</a></li><?php }?> 
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=3">Nepřijaté příspěvky</a></li><?php }?>          
+          <?php if ($this->rank['nazev'] == "Autor") {?> <li><a href="index.php?page=contribution">Nový příspěvek</a></li><?php }?>
+          <?php if ($this->rank['nazev'] == "Autor" || $this->rank['nazev'] == "Recenzent") {?><li><a href="index.php?page=public">Publikované příspěvky</li> </a><?php }?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?><li><a href="index.php?page=admin"><span class="glyphicon glyphicon-wrench"></span> Admin panel</a></li><?php };?>
+        </ul>
+        <form method="post"><button type="submit" name="ButtLogout" class="btn navbar-btn navbar-right" style="padding-right: -5px;"> <span class="glyphicon glyphicon-off"> Logout </button></form>
+      </div>
+    </nav>
+    <h1 class="textTitle">Informace o uživateli</h1>
+    <?php 
+    //-------------------INFO-----------------------------
+    if ($_SESSION['update'] == false) {
+    
+    ?> 
+    
+    <form class="form-horizontal" method="post">
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="uzivatel_jmeno">Uživatelské jméno:</label>
+        <div class="col-sm-10">
+         <p class="form-control-static"><?php echo $_SESSION['uzivatel']['uzivatel_jmeno']?></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="jmeno">Jméno:</label>
+        <div class="col-sm-10">
+         <p class="form-control-static"><?php echo $_SESSION['uzivatel']['jmeno']?></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="email">E-mail:</label>
+        <div class="col-sm-10">
+         <p class="form-control-static"><?php echo $_SESSION['uzivatel']['email']?></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="organizace">Organizace:</label>
+        <div class="col-sm-10">
+         <p class="form-control-static"><?php echo $_SESSION['uzivatel']['organizace']?></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="hodnost">Hodnost:</label>
+        <div class="col-sm-10">
+         <p class="form-control-static"><?php echo $this->rank['nazev']?></p>
+        </div>
+      </div>
+      <p><input type="submit" name="change" class="btn btn-primary BlueBackground WhiteText" value="Změnit údaje"></p>
+    </form>
+    
+    <?php 
+    }
+    //----------------------UPRAVA INFORMACI-----------------------
+    else if($_SESSION['update'] == true){
+    ?>
+        <div class="form-group">
+        <?php if (isset($_POST['changeInfo'])) {?>
+          <div class="alert alert-danger"> 
+        <?php
+          echo $_SESSION['error']."<br>";
+        }?></div>
+        
+        <form class="form-horizontal" method="post">
+          <div class="form-group">
+            <label class="control-label col-sm-1" for="uzivatel_jmeno">Uživatelské jméno:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static"><?php echo $_SESSION['uzivatel']['uzivatel_jmeno']?></p>
+          </div>
+        </div>
+        <br> 
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" class="form-control" name="hesloInfo" placeholder="Zadejte heslo pro změnu (není třeba)">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" class="form-control" name="jmenoInfo" value="<?php echo $_SESSION['uzivatel']['jmeno']?>">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+            <input type="text" class="form-control" name="emailInfo" value="<?php echo $_SESSION['uzivatel']['email']?>">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+            <input type="text" class="form-control" name="organizaceInfo" value="<?php echo $_SESSION['uzivatel']['organizace']?>">
+          </div>
+          <br>
+          <div class="form-group">
+            <label class="control-label col-sm-1" for="Hodnost">Hodnost:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static"><?php echo $this->rank['nazev']?></p>
+          </div>
+          <br>
+        </div>
+        <div class="inline-group">            
+          <input type="submit" name="changeInfo" class="btn btn-primary BlueBackground WhiteText" style="width: 100px;" value="Upravit">
+          <input type="submit" name="backInfo" class="btn btn-primary BlueBackground WhiteText" style="width: 100px;" value="Zpět">
+        </div>
+    </form>                                                         
+    <?php 
+      }
+    ?>
+    <br>
+  
+    <?php }
+  else {
+  ?>
+  <title>Konferenční systém WEB-KONF - User info</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+        </ul>
+      </div>
+    </nav>
+  <h1 class="textTitle">NEJSTE PŘIHLÁŠEN, PROSÍM PŘIHLAŠTE SE!!</h1> 
+  <?php }?> 

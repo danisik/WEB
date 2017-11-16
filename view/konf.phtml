@@ -1,0 +1,142 @@
+<?php if ($_SESSION['prihlasen'] != false) {?>
+<title>Konferenční systém WEB-KONF - hlavní stránka</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=konf">Konference</a></li>
+          <li><a href="index.php?page=user"><span class="glyphicon glyphicon-user"></span> <?php echo ($_SESSION['uzivatel']['uzivatel_jmeno']." (".$this->rank['nazev'].")") ?></a></li>
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=2">Přijaté příspěvky</a></li><?php }?> 
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?> <li><a href="index.php?page=konf&stav=3">Nepřijaté příspěvky</a></li><?php }?> 
+          <?php if ($this->rank['nazev'] == "Autor") {?> <li><a href="index.php?page=contribution">Nový příspěvek</a></li><?php }?>
+          <?php if ($this->rank['nazev'] == "Autor" || $this->rank['nazev'] == "Recenzent") {?><li><a href="index.php?page=public">Publikované příspěvky</li> </a><?php }?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <?php if ($this->rank['nazev'] == "HAdmin" || $this->rank['nazev'] == "Admin") {?><li><a href="index.php?page=admin"><span class="glyphicon glyphicon-wrench"></span> Admin panel</a></li><?php };?>
+        </ul>
+        <form method="post"><button type="submit" name="ButtLogout" class="btn navbar-btn navbar-right" style="padding-right: -5px;"> <span class="glyphicon glyphicon-off"> Logout </button></form>
+      </div>
+    </nav>    
+    
+    <?php 
+    //----------------------------------------------------------------
+    //------------------------ADMIN-----------------------------------
+    //----------------------------------------------------------------
+    if ($this->rank['nazev'] == "Admin" || $this->rank['nazev'] == "HAdmin") {
+    ?>
+    <h1 class="textTitle">Seznam příspěvků</h1>
+    
+    <div style="overflow-x:auto;" class="table-responsive">
+    <table class="table table-bordered">
+     <tr class="BlueBackground WhiteText">
+      <th rowspan="2">Název</th>
+      <th rowspan="2">Autoři</th>
+      <?php if (isset($_GET['stav'])) {?>
+      <th colspan = "7">Recenze</th>
+      <?php } else {?>
+      <th colspan = "8">Recenze</th>
+      <th rowspan="2">Rozhodnutí</th>
+      <?php }?>
+     </tr>
+     
+     <tr class="BlueBackground WhiteText">
+      <th>Recenzent</th>
+      <th>Orig.</th>
+      <th>Téma</th>
+      <th>Tech.</th>
+      <th>Jaz.</th>
+      <th>Dop.</th>
+      <th>Celk.</th>
+      <?php if (!isset($_GET['stav'])) {?>
+      <th>Vymazat</th>
+      <?php }?>
+     </tr>
+     <?php echo $_SESSION['admin'];?>
+     
+    </table>
+    </div>
+    
+    <?php
+    } 
+    //----------------------------------------------------------------
+    //-------------------------RECENZENT------------------------------
+    //----------------------------------------------------------------
+    else if ($this->rank['nazev'] == "Recenzent") {
+    ?>
+    
+    <h1 class="textTitle">Seznam příspěvků k posouzení</h1>
+    
+    <div style="overflow-x:auto;" class="table-responsive">
+    <table class="table table-bordered" style="max-width: 30%">
+     <tr class="BlueBackground WhiteText">
+      <th>Název</th>
+      <th>Ohodnocení</th>
+      <th>Stav</th>
+     </tr>
+      <?php echo $_SESSION['recenzent'];?>   
+    </table>
+    </div>
+    
+    
+    
+    <?php
+    }
+    //---------------------------------------------------------------- 
+    //-------------------------AUTOR---------------------------------
+    //----------------------------------------------------------------
+    else if ($this->rank['nazev'] == "Autor") {
+    
+    ?>
+    
+    <h1 class="textTitle">Seznam příspěvků</h1>
+    <form method="post">
+    <div style="overflow-x:auto;" class="table-responsive">
+    <table class="table table-bordered">
+     <tr class="BlueBackground WhiteText">
+      <th>Název</th>
+      <th>Autoři</th>
+      <th colspan = 3>Hodnocení</th>
+      <th>Stav</th>
+      <th>Vymazat</th>
+     </tr>
+     <?php echo $_SESSION['autor'];?>   
+    </table>
+    </div>
+    </form>
+    
+    <?php 
+    }
+    ?>
+    
+    
+    
+  <?php }
+  else {
+  ?>
+    <title>Konferenční systém WEB-KONF - Konference</title>
+</head>
+<body> 
+  <div class="container-fluid">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1> 
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>                                           
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+        </ul>
+      </div>
+    </nav>
+    <h1 class="textTitle">NEJSTE PŘIHLÁŠEN, PROSÍM PŘIHLAŠTE SE!!!</h1> 
+  <?php }?>

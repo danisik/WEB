@@ -1,0 +1,39 @@
+<title>Konferenční systém WEB-KONF - Přihlášení</title>
+</head>
+<body> 
+  <div class="container-fluid ">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1>
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+        </ul>
+      </div>
+    </nav>
+      <form method="post">
+        <h3 class="textTitle">PŘIHLÁŠENÍ DO SYSTÉMU</h3>
+        <div class="form-group">
+  <?php if (isset($_POST['Buttprihlas'])) {?>
+          <div class="alert alert-danger"> 
+  <?php
+      echo $_SESSION['error']."<br>";
+    }?>  </div>
+    
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="login" placeholder="Login">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" name="heslo" placeholder="Password">
+        </div>
+    <br><br>
+    <input type="submit" name = "Buttprihlas" value="Přihlásit se" class="btn btn-primary"> <br><br>
+</form> 

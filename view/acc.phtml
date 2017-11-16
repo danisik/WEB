@@ -1,0 +1,64 @@
+<title>Konferenční systém WEB-KONF - Nový uživatel</title>
+</head>
+<body> 
+  <div class="container-fluid ">
+    <header>
+      <h1 class = "header">KONFERENČNÍ SYSTÉM WEB-KONF </h1>
+      <h3>VZOR SEMESTRÁLNÍ PRÁCE Z PŘEDMĚTU WEB</h3>
+    </header>
+    <nav class="navbar navbar-inverse BlueBackground">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="index.php">Hlavní stránka</a></li>
+          <li><a href="index.php?page=login">Přihlásit se</a></li>
+          <li><a href="index.php?page=acc">Vytvořit nový účet</a></li>
+          <li><a href="index.php?page=public">Publikované příspěvky</a></li>
+          
+        </ul>
+      </div>
+    </nav>    
+    <form method="post">
+      <h3 class="textTitle">NOVÝ UŽIVATEL</h3>
+        <div class="form-group">
+        <?php if (isset($_POST['ButtnewAcc'])) {?>
+          <div class="alert alert-danger"> 
+        <?php
+          echo $_SESSION['error']."<br>";
+        }?></div>
+        
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="uziv_jmeno" placeholder="Uživatelské jméno ***">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" name="heslo" placeholder="Heslo ***">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" name="potvrzeni_hesla" placeholder="Potvrzení hesla ***">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="jmeno" placeholder="Jméno ***">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+          <input type="text" class="form-control" name="email" placeholder="Email ***">
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+          <input type="text" class="form-control" name="organizace" placeholder="Organizace ***">
+        </div>
+        <br>
+    <p class="pAcc"><label class = "RedText">*** = NUTNO ZADAT</label></p>
+    <input type="submit" name="ButtnewAcc" value="Uložit" class="btn btn-primary BlueBackground WhiteText"> <br><br>
+    </div>
+  </form> 
+  
+      
