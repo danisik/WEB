@@ -38,7 +38,7 @@
      <tr class="BlueBackground WhiteText">
       <th rowspan="2">Název</th>
       <th rowspan="2">Autoři</th>
-      <?php if (isset($_GET['stav'])) {?>
+      <?php if ((isset($_GET['stav']) && $_GET['stav'] == 2) || (isset($_GET['stav']) && $_GET['stav'] == 3)) {?>
       <th colspan = "7">Recenze</th>
       <?php } else {?>
       <th colspan = "8">Recenze</th>
@@ -54,7 +54,7 @@
       <th>Jaz.</th>
       <th>Dop.</th>
       <th>Celk.</th>
-      <?php if (!isset($_GET['stav'])) {?>
+      <?php if (!((isset($_GET['stav']) && $_GET['stav'] == 2) || (isset($_GET['stav']) && $_GET['stav'] == 3))) {?>
       <th>Vymazat</th>
       <?php }?>
      </tr>

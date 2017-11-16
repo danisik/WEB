@@ -108,7 +108,7 @@ class Controller_konf extends Controller {
       $_SESSION['recenzenti'] = self::createSelectBoxRecenzenti($recenzenti, null);
     
     
-      if (isset($_GET['stav'])) { self::createTableAdmin();} 
+      if ( (isset($_GET['stav']) && $_GET['stav'] == 2) || (isset($_GET['stav']) && $_GET['stav'] == 3) ) { self::createTableAdmin();} 
       else {self::createTableAdmin1();}
     
     }
